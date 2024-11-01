@@ -1,0 +1,9 @@
+# Project exclude paths
+/cart-service/target/
+/hm-api/target/
+/hm-common/target/
+/hm-gateway/target/
+/item-service/target/
+/pay-service/target/
+/trade-service/target/
+/user-service/target/
