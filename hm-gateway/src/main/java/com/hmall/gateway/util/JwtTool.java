@@ -34,7 +34,6 @@ public class JwtTool {
                 .setSigner(jwtSigner)
                 .sign();
     }
-
     /**
      * 解析token
      *
@@ -51,12 +50,12 @@ public class JwtTool {
         try {
             jwt = JWT.of(token).setSigner(jwtSigner);
         } catch (Exception e) {
-            throw new UnauthorizedException("无效的token", e);
+            throw new UnauthorizedException("无效的token1", e);
         }
         // 2.校验jwt是否有效
         if (!jwt.verify()) {
             // 验证失败
-            throw new UnauthorizedException("无效的token");
+            throw new UnauthorizedException("无效的token2");
         }
         // 3.校验是否过期
         try {
@@ -70,7 +69,6 @@ public class JwtTool {
             // 数据为空
             throw new UnauthorizedException("无效的token");
         }
-
         // 5.数据解析
         try {
            return Long.valueOf(userPayload.toString());
