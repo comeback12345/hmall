@@ -18,3 +18,4 @@ hm:
 spring:
   main:
     web-application-type: reactive
+
