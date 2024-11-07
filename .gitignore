@@ -7,3 +7,4 @@
 /pay-service/target/
 /trade-service/target/
 /user-service/target/
+/logs/*
