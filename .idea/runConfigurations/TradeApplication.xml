@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TradeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" value="local" />
+    <module name="trade-service" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.hmall.trade.TradeApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
