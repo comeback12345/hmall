@@ -9,6 +9,7 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -60,6 +61,18 @@ public class ElasticDocTest {
         DeleteRequest request = new DeleteRequest("item","100000011127");
         //发送请求
          client.delete(request, RequestOptions.DEFAULT);
+    }
+
+    @Test
+    void testUpdateDoc() throws IOException {
+        //准备request
+        UpdateRequest request = new UpdateRequest("item","100000011127");
+        //发送请求
+        request.doc(
+               "price",28600,
+                        "name","莎米特SUMMIT拉杆箱22英寸PC材质万向轮旅行箱行李箱PC154T4A可扩容的 米白"
+        );
+        client.update(request, RequestOptions.DEFAULT);
     }
 
     @BeforeEach
