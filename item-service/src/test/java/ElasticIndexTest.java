@@ -22,21 +22,28 @@ public class ElasticIndexTest {
 
     @Test
     void testCreat() throws IOException {
+        //准备request
         CreateIndexRequest request = new CreateIndexRequest("item");
+        //准备请求参数
         request.source(MAPPING_TEMPLATE, XContentType.JSON);
+        //发送请求
         client.indices().create(request, RequestOptions.DEFAULT);
     }
 
     @Test
     void testGet() throws IOException {
+        //准备request
         GetIndexRequest request = new GetIndexRequest("item");
+        //发送请求
         boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
         System.out.println(exists);
     }
 
     @Test
     void testDelete() throws IOException {
+        //准备request
         DeleteIndexRequest request = new DeleteIndexRequest("item");
+        //发送请求
         client.indices().delete(request, RequestOptions.DEFAULT);
     }
 
