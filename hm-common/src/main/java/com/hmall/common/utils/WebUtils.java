@@ -19,7 +19,6 @@ public class WebUtils {
 
     /**
      * 获取ServletRequestAttributes
-     *
      * @return ServletRequestAttributes
      */
     public static ServletRequestAttributes getServletRequestAttributes() {
@@ -32,7 +31,6 @@ public class WebUtils {
 
     /**
      * 获取request
-     *
      * @return HttpServletRequest
      */
     public static HttpServletRequest getRequest() {
@@ -42,7 +40,6 @@ public class WebUtils {
 
     /**
      * 获取response
-     *
      * @return HttpServletResponse
      */
     public static HttpServletResponse getResponse() {
@@ -52,7 +49,6 @@ public class WebUtils {
 
     /**
      * 获取request header中的内容
-     *
      * @param headerName 请求头名称
      * @return 请求头的值
      */
@@ -80,7 +76,6 @@ public class WebUtils {
     /**
      * 获取请求地址中的请求参数组装成 key1=value1&key2=value2
      * 如果key对应多个值，中间使用逗号隔开例如 key1对应value1，key2对应value2，value3， key1=value1&key2=value2,value3
-     *
      * @param request
      * @return 返回拼接字符串
      */
@@ -92,7 +87,6 @@ public class WebUtils {
     /**
      * 获取请求地址中的请求参数组装成 key1=value1&key2=value2
      * 如果key对应多个值，中间使用逗号隔开例如 key1对应value1，key2对应value2，value3， key1=value1&key2=value2,value3
-     *
      * @param queries
      * @return
      */
@@ -113,7 +107,6 @@ public class WebUtils {
 
     /**
      * 获取请求url中的uri
-     *
      * @param url
      * @return
      */

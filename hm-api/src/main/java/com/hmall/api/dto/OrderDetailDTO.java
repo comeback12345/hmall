@@ -1,15 +1,16 @@
 package com.hmall.api.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Schema(description = "订单明细条目")
+@ApiModel(description = "订单明细条目")
 @Data
 @Accessors(chain = true)
 public class OrderDetailDTO {
-    @Schema(description = "商品id")
+    @ApiModelProperty("商品id")
     private Long itemId;
-    @Schema(description = "商品购买数量")
+    @ApiModelProperty("商品购买数量")
     private Integer num;
 }

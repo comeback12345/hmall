@@ -23,7 +23,7 @@ public class ElasticIndexTest {
     @Test
     void testCreat() throws IOException {
         //准备request
-        CreateIndexRequest request = new CreateIndexRequest("item");
+        CreateIndexRequest request = new CreateIndexRequest("items");
         //准备请求参数
         request.source(MAPPING_TEMPLATE, XContentType.JSON);
         //发送请求
@@ -33,7 +33,7 @@ public class ElasticIndexTest {
     @Test
     void testGet() throws IOException {
         //准备request
-        GetIndexRequest request = new GetIndexRequest("item");
+        GetIndexRequest request = new GetIndexRequest("items");
         //发送请求
         boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
         System.out.println(exists);
@@ -42,7 +42,7 @@ public class ElasticIndexTest {
     @Test
     void testDelete() throws IOException {
         //准备request
-        DeleteIndexRequest request = new DeleteIndexRequest("item");
+        DeleteIndexRequest request = new DeleteIndexRequest("items");
         //发送请求
         client.indices().delete(request, RequestOptions.DEFAULT);
     }

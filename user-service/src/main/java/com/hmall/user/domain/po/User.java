@@ -12,12 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 用户表
- * </p>
- *
- * @author wu
- * @since 2023-05-05
+ * 用户信息
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

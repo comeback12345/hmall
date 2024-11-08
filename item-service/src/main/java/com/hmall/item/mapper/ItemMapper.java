@@ -6,9 +6,7 @@ import com.hmall.item.domain.po.Item;
 import org.apache.ibatis.annotations.Update;
 
 /**
- * <p>
  * 商品表 Mapper 接口
- * </p>
  */
 public interface ItemMapper extends BaseMapper<Item> {
 
