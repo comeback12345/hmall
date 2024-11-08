@@ -22,7 +22,6 @@ public class JwtTool {
 
     /**
      * 创建 access-token
-     *
      * @param userId 用户信息
      * @return access-token
      */
@@ -36,7 +35,6 @@ public class JwtTool {
     }
     /**
      * 解析token
-     *
      * @param token token
      * @return 解析刷新token得到的用户信息
      */

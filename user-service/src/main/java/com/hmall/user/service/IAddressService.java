@@ -5,12 +5,7 @@ import com.hmall.user.domain.po.Address;
 
 
 /**
- * <p>
- *  服务类
- * </p>
- *
- * @author 虎哥
- * @since 2023-05-05
+ * 服务类
  */
 public interface IAddressService extends IService<Address> {
 

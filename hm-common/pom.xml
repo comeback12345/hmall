@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.13</version> <!-- 这个版本应与 Java 11 兼容 -->
+            <version>1.5.11</version> <!-- 这个版本应与 Java 11 兼容 -->
         </dependency>
 
         <dependency>
