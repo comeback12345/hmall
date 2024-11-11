@@ -90,6 +90,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         });
         */
+
+
         ObjectMapper objectMapper = new ObjectMapper();
         String itemIdsJson = objectMapper.writeValueAsString(itemIds);
         Long userId = UserContext.getUser();
@@ -97,6 +99,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             message.getMessageProperties().setHeader("userId", userId);
             return message;
         });
+
         /*
         int num=1;
         try {
@@ -106,6 +109,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new RuntimeException(e);
         }
         */
+
+
 
         // 4.扣减库存
         try {
