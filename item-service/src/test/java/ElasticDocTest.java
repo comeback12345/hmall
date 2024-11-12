@@ -2,6 +2,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hmall.common.utils.CollUtils;
+import com.hmall.item.ItemApplication;
 import com.hmall.item.domain.po.Item;
 import com.hmall.item.domain.po.ItemDoc;
 import com.hmall.item.service.IItemService;
@@ -32,13 +33,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-//@SpringBootTest(properties = "spring.profiles.active=local",classes = ItemApplication.class)
+@SpringBootTest(properties = "spring.profiles.active=local",classes = ItemApplication.class)
 public class ElasticDocTest {
 
     private RestHighLevelClient client;
