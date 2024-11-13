@@ -53,7 +53,7 @@ public class ElasticDocTest {
         Item item = itemService.getById(100000011127L);
         ItemDoc itemDoc = BeanUtil.copyProperties(item, ItemDoc.class);
         //准备request
-        IndexRequest request = new IndexRequest("item").id(itemDoc.getId());
+        IndexRequest request = new IndexRequest("items").id(itemDoc.getId());
         //准备请求参数
         request.source(JSONUtil.toJsonStr(itemDoc), XContentType.JSON);
         //发送请求
@@ -63,7 +63,7 @@ public class ElasticDocTest {
     @Test
     void testGetDoc() throws IOException {
         //准备request
-        GetRequest request = new GetRequest("item","100000011127");
+        GetRequest request = new GetRequest("items","100000011127");
         //发送请求
         GetResponse response = client.get(request, RequestOptions.DEFAULT);
         //解析响应结果

@@ -74,7 +74,9 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
         if (!"".equals(query.getSortBy())){
             searchRequest.source().sort(query.getSortBy(), query.getIsAsc()? SortOrder.ASC : SortOrder.DESC);
         }else {
-            searchRequest.source().sort("updateTime",query.getIsAsc()? SortOrder.ASC : SortOrder.DESC);
+            searchRequest.source().sort("_score", SortOrder.DESC);
+            //searchRequest.source().sort("price",query.getIsAsc()? SortOrder.DESC : SortOrder.ASC);
+            //searchRequest.source().sort("updateTime",query.getIsAsc()? SortOrder.ASC : SortOrder.DESC);
         }
         //分类
         if (query.getCategory()!=null && !"".equals(query.getCategory())){

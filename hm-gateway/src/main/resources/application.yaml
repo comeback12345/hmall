@@ -15,6 +15,7 @@ hm:
       - /users/login
       - /items/**
       - /hi
+      - /users
 spring:
   main:
     web-application-type: reactive

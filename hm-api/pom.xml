@@ -56,6 +56,12 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.5.5</version> <!-- 这个版本应与 Java 11 兼容 -->
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>3.5.7</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

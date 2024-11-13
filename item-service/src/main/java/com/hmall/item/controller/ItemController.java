@@ -2,16 +2,19 @@ package com.hmall.item.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hmall.api.dto.ItemDTO;
 import com.hmall.api.dto.OrderDetailDTO;
 import com.hmall.common.domain.PageDTO;
 import com.hmall.common.domain.PageQuery;
 import com.hmall.common.utils.BeanUtils;
 import com.hmall.item.domain.po.Item;
+import com.hmall.item.domain.po.ItemDoc;
 import com.hmall.item.service.IItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 public class ItemController {
 
     private final IItemService itemService;
+    private final RabbitTemplate rabbitTemplate;
 
     @ApiOperation("分页查询商品")
     @GetMapping("/page")
@@ -47,9 +51,19 @@ public class ItemController {
 
     @ApiOperation("新增商品")
     @PostMapping
-    public void saveItem(@RequestBody ItemDTO item) {
+    public void saveItem(@RequestBody ItemDTO itemdto) throws JsonProcessingException {
         // 新增
-        itemService.save(BeanUtils.copyBean(item, Item.class));
+        itemdto.setStatus(1);
+        Item item = BeanUtils.copyBean(itemdto, Item.class);
+        itemService.save(item);
+        ItemDoc itemDoc = BeanUtils.copyProperties(item, ItemDoc.class);
+        //BeanUtils.copyProperties(item, itemDoc);
+        //ObjectMapper objectMapper = new ObjectMapper();
+        //String itemIdsJson = objectMapper.writeValueAsString(itemDoc);
+        rabbitTemplate.convertAndSend("es.item.direct","item.change",itemDoc,message-> {
+            message.getMessageProperties().setHeader("method", "add");
+            return message;
+        });
     }
 
     @ApiOperation("更新商品状态")
@@ -68,12 +82,23 @@ public class ItemController {
         item.setStatus(null);
         // 更新
         itemService.updateById(BeanUtils.copyBean(item, Item.class));
+        ItemDoc itemDoc = BeanUtils.copyBean(item, ItemDoc.class);
+        rabbitTemplate.convertAndSend("es.item.direct","item.change",itemDoc,message-> {
+            message.getMessageProperties().setHeader("method", "update");
+            return message;
+        });
     }
 
     @ApiOperation("根据id删除商品")
     @DeleteMapping("{id}")
     public void deleteItemById(@PathVariable Long id) {
         itemService.removeById(id);
+        ItemDoc itemDoc = new ItemDoc();
+        itemDoc.setId(id.toString());
+        rabbitTemplate.convertAndSend("es.item.direct","item.change",itemDoc,message-> {
+            message.getMessageProperties().setHeader("method", "delete");
+            return message;
+        });
     }
 
     @ApiOperation("批量扣减库存")

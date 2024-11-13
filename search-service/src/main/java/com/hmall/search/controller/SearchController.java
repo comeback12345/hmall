@@ -21,6 +21,7 @@ public class SearchController {
     @ApiOperation("搜索商品")
     @GetMapping("/list")
     public PageDTO<ItemDoc> search(ItemPageQuery query) {
+
         return searchService.EsSearch(query);
     }
 
