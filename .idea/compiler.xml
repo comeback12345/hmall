@@ -10,8 +10,8 @@
         <module name="cart-service" />
         <module name="pay-service" />
         <module name="hm-gateway" />
-        <module name="trade-service" />
         <module name="search-service" />
+        <module name="trade-service" />
         <module name="hm-common" />
         <module name="item-service" />
         <module name="user-service" />
