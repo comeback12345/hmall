@@ -1,0 +1,12 @@
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\domain\query\ItemPageQuery.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\domain\po\Item.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\mapper\SearchMapper.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\SearchApplication.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\service\impl\SearchServiceImpl.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\domain\po\ItemDoc.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\controller\SearchController.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\domain\vo\CategoryAndBrandVo.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\config\AmqpConfig.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\domain\dto\ItemDTO.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\listener\itemUpdateListener.java
+D:\BaiduNetdiskDownload\hmall\search-service\src\main\java\com\hmall\search\service\ISearchService.java

@@ -1,0 +1,12 @@
+com\hmall\search\service\ISearchService.class
+com\hmall\search\domain\dto\ItemDTO.class
+com\hmall\search\domain\query\ItemPageQuery.class
+com\hmall\search\service\impl\SearchServiceImpl.class
+com\hmall\search\domain\po\Item.class
+com\hmall\search\domain\vo\CategoryAndBrandVo.class
+com\hmall\search\config\AmqpConfig.class
+com\hmall\search\mapper\SearchMapper.class
+com\hmall\search\SearchApplication.class
+com\hmall\search\listener\itemUpdateListener.class
+com\hmall\search\controller\SearchController.class
+com\hmall\search\domain\po\ItemDoc.class
