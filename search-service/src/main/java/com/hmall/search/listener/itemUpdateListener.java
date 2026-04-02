@@ -46,7 +46,7 @@ public class itemUpdateListener {
             //1.准备request对象
             UpdateRequest request = new UpdateRequest("items",itemDoc.getId());
             //2.准备请求体
-            request.doc(JSONUtil.toJsonStr(method));
+            request.doc(JSONUtil.toJsonStr(itemDoc));
             //3.发送请求
             try {
                 client.update(request, RequestOptions.DEFAULT);

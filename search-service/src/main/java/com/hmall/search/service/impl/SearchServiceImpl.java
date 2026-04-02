@@ -65,7 +65,7 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
         //分页
         searchRequest.source().from(query.from()).size(query.getPageSize());//获取页数
         //排序
-        if (!"".equals(query.getSortBy())){
+        if (query.getSortBy() != null && !"".equals(query.getSortBy())){
             searchRequest.source().sort(query.getSortBy(), query.getIsAsc()? SortOrder.ASC : SortOrder.DESC);
         }else {
             searchRequest.source().sort("_score", SortOrder.DESC);
@@ -106,7 +106,20 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
             final SearchHit[] hits = search.getHits().getHits();
             List<ItemDoc> list=new ArrayList<>();
             for (SearchHit hit : hits) {
-                ItemDoc itemDoc = JSONUtil.toBean(hit.getSourceAsString(), ItemDoc.class);
+                // 手动解析 JSON，避免日期字段转换异常
+                String sourceJson = hit.getSourceAsString();
+                cn.hutool.json.JSONObject jsonObject = new cn.hutool.json.JSONObject(sourceJson);
+                ItemDoc itemDoc = new ItemDoc();
+                itemDoc.setId(jsonObject.getStr("id"));
+                itemDoc.setName(jsonObject.getStr("name"));
+                itemDoc.setPrice(jsonObject.getInt("price"));
+                itemDoc.setImage(jsonObject.getStr("image"));
+                itemDoc.setCategory(jsonObject.getStr("category"));
+                itemDoc.setBrand(jsonObject.getStr("brand"));
+                itemDoc.setSold(jsonObject.getInt("sold", 0));
+                itemDoc.setCommentCount(jsonObject.getInt("commentCount", 0));
+                itemDoc.setIsAD(jsonObject.getBool("isAD", false));
+                
                 Map<String, HighlightField> hfs = hit.getHighlightFields();
                 if (CollUtils.isNotEmpty(hfs)) {
                     // 5.1.有高亮结果，获取name的高亮结果
