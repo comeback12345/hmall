@@ -3,12 +3,10 @@ package com.hmall.search.listener;
 import cn.hutool.json.JSONUtil;
 import com.hmall.search.domain.po.ItemDoc;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHost;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.amqp.core.Message;
@@ -32,10 +30,6 @@ public class itemUpdateListener {
             key = "item.change"
     ))
     private void handleItemChange(ItemDoc itemDoc, Message message) throws IOException {
-        //建立连接
-        client = new RestHighLevelClient(RestClient.builder(
-                HttpHost.create("http://192.168.154.128:9200")
-        ));
         //判断当前是什么操作
         String method = message.getMessageProperties().getHeader("method");
         if("add".equals(method)){
@@ -69,7 +63,5 @@ public class itemUpdateListener {
         }else {
             log.error("无法匹配操作类型");
         }
-        //断开连接
-        client.close();
     }
 }

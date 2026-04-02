@@ -21,12 +21,12 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator-core</artifactId>
-            <version>0.51</version> <!-- 或者其他最新的版本 -->
+            <version>0.51</version>
         </dependency>
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.139</version> <!-- 确保是兼容的版本 -->
+            <version>4.8.139</version>
         </dependency>
         <!--common-->
         <dependency>
@@ -73,12 +73,6 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-        </dependency>
-
-        <!--消息发送-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
         <dependency>
             <groupId>com.heima</groupId>

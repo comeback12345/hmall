@@ -25,10 +25,16 @@
             <artifactId>hm-common</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--hm-api,引入自己的模块-->
+        <!--hm-api，引入自己的模块-->
         <dependency>
             <groupId>com.heima</groupId>
             <artifactId>hm-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--search-service，用于获取 ItemDoc 实体类-->
+        <dependency>
+            <groupId>com.heima</groupId>
+            <artifactId>search-service</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!--web-->

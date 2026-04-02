@@ -18,16 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator-core</artifactId>
-            <version>0.51</version> <!-- 或者其他最新的版本 -->
-        </dependency>
-        <dependency>
-            <groupId>io.github.classgraph</groupId>
-            <artifactId>classgraph</artifactId>
-            <version>4.8.139</version> <!-- 确保是兼容的版本 -->
-        </dependency>
         <!--common-->
         <dependency>
             <groupId>com.heima</groupId>

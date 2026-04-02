@@ -39,6 +39,7 @@
         <hutool.version>5.8.11</hutool.version>
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>7.12.1</elasticsearch.version>
+        <springdoc.version>1.6.14</springdoc.version>
     </properties>
 
     <!-- 对依赖包进行管理 -->
@@ -52,7 +53,7 @@
             <dependency>
                 <groupId>io.github.classgraph</groupId>
                 <artifactId>classgraph</artifactId>
-                <version>4.8.75</version> <!-- 确保是兼容的版本 -->
+                <version>4.8.154</version> <!-- 升级到兼容版本 -->
             </dependency>
 
             <!--spring cloud-->
@@ -78,11 +79,22 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
-            <!--hutool工具包-->
+            <!--hutool 工具包-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <!--springdoc openapi--> 
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

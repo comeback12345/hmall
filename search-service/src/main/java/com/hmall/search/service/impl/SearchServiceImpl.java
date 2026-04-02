@@ -11,11 +11,9 @@ import com.hmall.search.domain.query.ItemPageQuery;
 import com.hmall.search.domain.vo.CategoryAndBrandVo;
 import com.hmall.search.mapper.SearchMapper;
 import com.hmall.search.service.ISearchService;
-import org.apache.http.HttpHost;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -45,10 +43,6 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
     private  RestHighLevelClient restHighLevelClient;
     @Override
     public PageDTO<ItemDoc> EsSearch(ItemPageQuery query) {
-        //建立连接
-        restHighLevelClient = new RestHighLevelClient(RestClient.builder(
-                HttpHost.create("http://192.168.154.128:9200")
-        ));
         PageDTO<ItemDoc> result = new PageDTO<>();
         //1.构造请求
         SearchRequest searchRequest = new SearchRequest("items");
@@ -128,12 +122,6 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
             result.setList(list);
         } catch (IOException e) {
             log.error("查询ES失败,出现异常");
-        } finally {
-            try {
-                restHighLevelClient.close();
-            } catch (IOException e) {
-                log.error("连接异常");
-            }
         }
         //返回
         return result;
@@ -147,9 +135,6 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        restHighLevelClient = new RestHighLevelClient(RestClient.builder(
-                HttpHost.create("http://192.168.154.128:9200")
-        ));
         CategoryAndBrandVo categoryAndBrandVo = new CategoryAndBrandVo();
         // 1.创建Request
         SearchRequest request = new SearchRequest("items");
@@ -201,11 +186,6 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
         }
         categoryAndBrandVo.setCategory(categoryList);
         categoryAndBrandVo.setBrand(brandList);
-        try {
-            restHighLevelClient.close();
-        } catch (IOException e) {
-            log.error("关闭连接异常");
-        }
         return categoryAndBrandVo;
     }
 }

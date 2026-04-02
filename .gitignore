@@ -1,10 +1,44 @@
-# Project exclude paths
-/cart-service/target/
-/hm-api/target/
-/hm-common/target/
-/hm-gateway/target/
-/item-service/target/
-/pay-service/target/
-/trade-service/target/
-/user-service/target/
-/logs/
+# Compiled class file
+*.class
+
+# Log file
+*.log
+logs/
+**/logs/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# target
+target/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# System Files
+.DS_Store
+Thumbs.db
