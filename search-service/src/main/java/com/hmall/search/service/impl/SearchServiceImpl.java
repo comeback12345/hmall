@@ -23,7 +23,9 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
@@ -167,38 +169,100 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Item> implement
         request.source().query(boolQueryBuilder).size(0);
 
         request.source().aggregation(
-                AggregationBuilders.terms("category_agg").field("category").size(10)
+                AggregationBuilders.terms("category_agg").field("category").size(100)
         );
 
         request.source().aggregation(
-                AggregationBuilders.terms("brand_agg").field("brand").size(10));
+                AggregationBuilders.terms("brand_agg").field("brand").size(100));
         List<String> categoryList = new ArrayList<>();
         List<String> brandList = new ArrayList<>();
         // 4.发送请求
         try {
             SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+            
+            // 调试信息：打印响应详情
+            System.out.println("==== ES 响应开始 ====");
+            System.out.println("总命中数：" + response.getHits().getTotalHits().value);
             Aggregations aggregations = response.getAggregations();
-            Terms categoryTerms = aggregations.get("category_agg");
-            // 5.2.获取聚合中的桶
-            List<? extends Terms.Bucket> buckets = categoryTerms.getBuckets();
-            for (Terms.Bucket bucket : buckets) {
-                // 5.4.获取桶内key
-                String category = bucket.getKeyAsString();
-                categoryList.add(category);
+            System.out.println("聚合对象：" + aggregations);
+            
+            if (aggregations != null) {
+                Terms categoryTerms = aggregations.get("category_agg");
+                System.out.println("分类聚合对象：" + categoryTerms);
+                if (categoryTerms != null) {
+                    List<? extends Terms.Bucket> buckets = categoryTerms.getBuckets();
+                    System.out.println("分类桶数量：" + buckets.size());
+                    for (Terms.Bucket bucket : buckets) {
+                        String category = bucket.getKeyAsString();
+                        long docCount = bucket.getDocCount();
+                        System.out.println("分类：" + category + ", 文档数：" + docCount);
+                        categoryList.add(category);
+                    }
+                }
+                
+                Terms brandTerms = aggregations.get("brand_agg");
+                System.out.println("品牌聚合对象：" + brandTerms);
+                if (brandTerms != null) {
+                    List<? extends Terms.Bucket> buckets1 = brandTerms.getBuckets();
+                    System.out.println("品牌桶数量：" + buckets1.size());
+                    for (Terms.Bucket bucket : buckets1) {
+                        String brand = bucket.getKeyAsString();
+                        long docCount = bucket.getDocCount();
+                        System.out.println("品牌：" + brand + ", 文档数：" + docCount);
+                        brandList.add(brand);
+                    }
+                }
+            } else {
+                System.out.println("聚合结果为 null！");
             }
-            Terms brandTerms = aggregations.get("brand_agg");
-            // 5.2.获取聚合中的桶
-            List<? extends Terms.Bucket> buckets1 = brandTerms.getBuckets();
-            for (Terms.Bucket bucket : buckets1) {
-                // 5.4.获取桶内key
-                String brand = bucket.getKeyAsString();
-                brandList.add(brand);
-            }
+            System.out.println("==== ES 响应结束 ====");
+            
         } catch (IOException e) {
-            log.error("发送请求异常");
+            e.printStackTrace();
         }
         categoryAndBrandVo.setCategory(categoryList);
         categoryAndBrandVo.setBrand(brandList);
         return categoryAndBrandVo;
+    }
+
+    @Override
+    public List<String> getBrands(ItemPageQuery query) {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<String> brandList = new ArrayList<>();
+        
+        SearchRequest request = new SearchRequest("items");
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        
+        if (query.getKey() != null && !"".equals(query.getKey())) {
+            boolQueryBuilder.must(QueryBuilders.matchQuery("name", query.getKey()));
+        }
+        
+        request.source().query(boolQueryBuilder).size(0);
+        
+        TermsAggregationBuilder brandAgg = AggregationBuilders.terms("brand_agg")
+                .field("brand")
+                .size(200)  // 设置足够大的值，获取所有品牌
+                .order(BucketOrder.count(false));
+        
+        request.source().aggregation(brandAgg);
+        
+        try {
+            SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+            Aggregations aggregations = response.getAggregations();
+            Terms brandTerms = aggregations.get("brand_agg");
+            List<? extends Terms.Bucket> buckets = brandTerms.getBuckets();
+            for (Terms.Bucket bucket : buckets) {
+                String brand = bucket.getKeyAsString();
+                brandList.add(brand);
+            }
+        } catch (IOException e) {
+            log.error("发送请求异常", e);
+        }
+        
+        return brandList;
     }
 }
