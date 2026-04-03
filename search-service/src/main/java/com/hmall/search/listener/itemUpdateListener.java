@@ -8,7 +8,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.xcontent.XContentType;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -16,7 +16,7 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 
 @Component
@@ -46,7 +46,7 @@ public class itemUpdateListener {
             //1.准备request对象
             UpdateRequest request = new UpdateRequest("items",itemDoc.getId());
             //2.准备请求体
-            request.doc(JSONUtil.toJsonStr(itemDoc));
+            request.doc(JSONUtil.toJsonStr(itemDoc), XContentType.JSON);
             //3.发送请求
             try {
                 client.update(request, RequestOptions.DEFAULT);

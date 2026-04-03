@@ -1,11 +1,15 @@
 server:
   port: 8086
+
 feign:
   okhttp:
-    enabled: true # 开启OKHttp连接池支持
+    enabled: true # 开启 OKHttp 连接池支持
+
 hm:
+  db:
+    database: hm-pay
   swagger:
     title: 支付服务接口文档
     package: com.hmall.pay.controller
-  db:
-    database: hm-pay
+    db:
+      database: hm-pay

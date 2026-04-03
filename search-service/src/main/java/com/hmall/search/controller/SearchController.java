@@ -5,8 +5,8 @@ import com.hmall.search.domain.po.ItemDoc;
 import com.hmall.search.domain.query.ItemPageQuery;
 import com.hmall.search.domain.vo.CategoryAndBrandVo;
 import com.hmall.search.service.ISearchService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "搜索相关接口")
+@Tag(name = "搜索相关接口")
 @RestController
 @RequestMapping("/search")
 @RequiredArgsConstructor
@@ -22,26 +22,26 @@ public class SearchController {
 
     private final ISearchService searchService;
 
-    @ApiOperation("搜索商品")
+    @Operation(summary = "搜索商品")
     @GetMapping("/list")
     public PageDTO<ItemDoc> search(ItemPageQuery query) {
 
         return searchService.EsSearch(query);
     }
 
-    @ApiOperation("分类聚合接口")
+    @Operation(summary = "分类聚合接口")
     @PostMapping("/filters")
     public CategoryAndBrandVo getFilters(@RequestBody ItemPageQuery query) {
         return searchService.getFilters(query);
     }
 
-    @ApiOperation("获取品牌列表")
+    @Operation(summary = "获取品牌列表")
     @GetMapping("/brands")
     public List<String> getBrands(ItemPageQuery query) {
         return searchService.getBrands(query);
     }
 
-    @ApiOperation("测试 ES 连接")
+    @Operation(summary = "测试 ES 连接")
     @GetMapping("/test-es")
     public String testES() {
         try {

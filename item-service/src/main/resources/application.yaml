@@ -1,11 +1,19 @@
 server:
   port: 8081
+
 feign:
   okhttp:
     enabled: true
+
 hm:
-  swagger:
-    title: 交易服务接口文档
-    package: com.hmall.item.controller
   db:
+    host: 192.168.3.106
+    port: 3306
     database: hm-item
+    un: root
+    pw: 123
+  swagger:
+    title: 商品服务接口文档
+    package: com.hmall.item.controller
+    db:
+      database: hm-item

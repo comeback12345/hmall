@@ -1,28 +1,27 @@
 package com.hmall.user.domain.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@ApiModel(description = "收货地址实体")
+@Schema(description = "收货地址实体")
 public class AddressDTO {
-    @ApiModelProperty("id")
+    @Schema(description = "id")
     private Long id;
-    @ApiModelProperty("省")
+    @Schema(description = "省")
     private String province;
-    @ApiModelProperty("市")
+    @Schema(description = "市")
     private String city;
-    @ApiModelProperty("县/区")
+    @Schema(description = "县/区")
     private String town;
-    @ApiModelProperty("手机")
+    @Schema(description = "手机")
     private String mobile;
-    @ApiModelProperty("详细地址")
+    @Schema(description = "详细地址")
     private String street;
-    @ApiModelProperty("联系人")
+    @Schema(description = "联系人")
     private String contact;
-    @ApiModelProperty("是否是默认 1默认 0否")
+    @Schema(description = "是否是默认 1默认 0否")
     private Integer isDefault;
-    @ApiModelProperty("备注")
+    @Schema(description = "备注")
     private String notes;
 }

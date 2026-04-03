@@ -5,21 +5,26 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hmall.common.utils.BeanUtils;
 import com.hmall.common.utils.CollUtils;
 import com.hmall.common.utils.Convert;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PageDTO<T> {
     protected Long total;
     protected Long pages;
     protected List<T> list;
+
+    public PageDTO() {
+    }
+
+    public PageDTO(Long total, Long pages, List<T> list) {
+        this.total = total;
+        this.pages = pages;
+        this.list = list;
+    }
 
     public static <T> PageDTO<T> empty(Long total, Long pages) {
         return new PageDTO<>(total, pages, CollUtils.emptyList());

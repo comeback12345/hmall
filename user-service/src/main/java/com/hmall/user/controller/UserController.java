@@ -7,10 +7,10 @@ import com.hmall.user.domain.dto.UserDTO;
 import com.hmall.user.domain.po.User;
 import com.hmall.user.domain.vo.UserLoginVO;
 import com.hmall.user.service.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
-@Api(tags = "用户相关接口")
+@Tag(name = "用户相关接口")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -27,22 +27,22 @@ public class UserController {
     private final IUserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    @ApiOperation("用户登录接口")
+    @Operation(summary = "用户登录接口")
     @PostMapping("login")
     public UserLoginVO login(@RequestBody @Validated LoginFormDTO loginFormDTO){
         return userService.login(loginFormDTO);
     }
 
-    @ApiOperation("扣减余额")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pw", value = "支付密码"),
-            @ApiImplicitParam(name = "amount", value = "支付金额")
+    @Operation(summary = "扣减余额")
+    @Parameters({
+            @Parameter(name = "pw", description = "支付密码"),
+            @Parameter(name = "amount", description = "支付金额")
     })
     @PutMapping("/money/deduct")
     public void deductMoney(@RequestParam String pw,@RequestParam Integer amount){
         userService.deductMoney(pw, amount);
     }
-    @ApiOperation("新增用户")
+    @Operation(summary = "新增用户")
     @PostMapping
     public void saveItem(@RequestBody UserDTO userdto) {
         // 新增用户
@@ -53,4 +53,3 @@ public class UserController {
         userService.save(user);
     }
 }
-

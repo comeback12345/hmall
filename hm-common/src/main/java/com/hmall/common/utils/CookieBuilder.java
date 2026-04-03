@@ -3,17 +3,17 @@ package com.hmall.common.utils;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @Data
 @Accessors(chain = true, fluent = true)
 public class CookieBuilder {
@@ -26,6 +26,8 @@ public class CookieBuilder {
     private String domain;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+
+    private static final Logger log = LoggerFactory.getLogger(CookieBuilder.class);
 
     public CookieBuilder(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;

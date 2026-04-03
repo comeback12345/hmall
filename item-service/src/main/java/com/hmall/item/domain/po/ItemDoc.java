@@ -1,44 +1,41 @@
 package com.hmall.item.domain.po;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(description = "索引库实体")
-public class ItemDoc{
+@Schema(description = "索引库实体")
+public class ItemDoc {
 
-    @ApiModelProperty("商品id")
+    @Schema(description = "商品 id")
     private String id;
 
-    @ApiModelProperty("商品名称")
+    @Schema(description = "商品名称")
     private String name;
 
-    @ApiModelProperty("价格（分）")
+    @Schema(description = "价格（分）")
     private Integer price;
 
-    @ApiModelProperty("商品图片")
+    @Schema(description = "商品图片")
     private String image;
 
-    @ApiModelProperty("类目名称")
+    @Schema(description = "类目名称")
     private String category;
 
-    @ApiModelProperty("品牌名称")
+    @Schema(description = "品牌名称")
     private String brand;
 
-    @ApiModelProperty("销量")
+    @Schema(description = "销量")
     private Integer sold;
 
-    @ApiModelProperty("评论数")
+    @Schema(description = "评论数")
     private Integer commentCount;
 
-    @ApiModelProperty("是否是推广广告，true/false")
+    @Schema(description = "是否是推广广告，true/false")
     private Boolean isAD;
 
-    @ApiModelProperty("更新时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "更新时间")
     private LocalDateTime updateTime;
 }

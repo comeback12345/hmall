@@ -1,18 +1,19 @@
 server:
   port: 8084
+
 feign:
   okhttp:
     enabled: true
+
 hm:
-  swagger:
-    title: 交易服务接口文档
-    package: com.hmall.user.controller
   db:
     database: hm-user
+  swagger:
+    title: 用户服务接口文档
+    package: com.hmall.user.controller
+    db:
+      database: hm-user
   jwt:
-    #location: classpath:hmall.jks
-    #alias: hmall
-    #password: hmall123
     tokenTTL: 30m
     password: mykey123
     location: classpath:mykey.jks

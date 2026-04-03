@@ -1,34 +1,34 @@
 package com.hmall.item.domain.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@ApiModel(description = "商品实体")
+@Schema(description = "商品实体")
 public class ItemDTO {
-    @ApiModelProperty("商品id")
+    @Schema(description = "商品id")
     private Long id;
-    @ApiModelProperty("SKU名称")
+    @Schema(description = "SKU名称")
     private String name;
-    @ApiModelProperty("价格（分）")
+    @Schema(description = "价格（分）")
     private Integer price;
-    @ApiModelProperty("库存数量")
+    @Schema(description = "库存数量")
     private Integer stock;
-    @ApiModelProperty("商品图片")
+    @Schema(description = "商品图片")
     private String image;
-    @ApiModelProperty("类目名称")
+    @Schema(description = "类目名称")
     private String category;
-    @ApiModelProperty("品牌名称")
+    @Schema(description = "品牌名称")
     private String brand;
-    @ApiModelProperty("规格")
+    @Schema(description = "规格")
     private String spec;
-    @ApiModelProperty("销量")
+    @Schema(description = "销量")
     private Integer sold;
-    @ApiModelProperty("评论数")
+    @Schema(description = "评论数")
     private Integer commentCount;
-    @ApiModelProperty("是否是推广广告，true/false")
+    @Schema(description = "是否是推广广告，true/false")
     private Boolean isAD;
-    @ApiModelProperty("商品状态 1-正常，2-下架，3-删除")
+    @Schema(description = "商品状态 1-正常，2-下架，3-删除")
     private Integer status;
 }
+

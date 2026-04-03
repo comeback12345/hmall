@@ -1,35 +1,34 @@
 package com.hmall.cart.domain.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(description = "购物车VO实体")
+@Schema(description = "购物车VO实体")
 public class CartVO {
-    @ApiModelProperty("购物车条目id ")
+    @Schema(description = "购物车条目id ")
     private Long id;
-    @ApiModelProperty("sku商品id")
+    @Schema(description = "sku商品id")
     private Long itemId;
-    @ApiModelProperty("购买数量")
+    @Schema(description = "购买数量")
     private Integer num;
-    @ApiModelProperty("商品标题")
+    @Schema(description = "商品标题")
     private String name;
-    @ApiModelProperty("商品动态属性键值集")
+    @Schema(description = "商品动态属性键值集")
     private String spec;
-    @ApiModelProperty("价格,单位：分")
+    @Schema(description = "价格,单位：分")
     private Integer price;
-    @ApiModelProperty("商品最新价格")
+    @Schema(description = "商品最新价格")
     private Integer newPrice;
-    @ApiModelProperty("商品最新状态")
+    @Schema(description = "商品最新状态")
     private Integer status = 1;
-    @ApiModelProperty("商品最新库存")
+    @Schema(description = "商品最新库存")
     private Integer stock = 10;
-    @ApiModelProperty("商品图片")
+    @Schema(description = "商品图片")
     private String image;
-    @ApiModelProperty("创建时间")
+    @Schema(description = "创建时间")
     private LocalDateTime createTime;
 
 }
