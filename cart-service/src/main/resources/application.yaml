@@ -1,6 +1,18 @@
 server:
   port: 8082
 
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  cloud:
+    openfeign:
+      lazy-attributes-resolution: true
+  seata:
+    enabled: false
+
 feign:
   okhttp:
     enabled: true # 开启 OKHttp 连接池支持

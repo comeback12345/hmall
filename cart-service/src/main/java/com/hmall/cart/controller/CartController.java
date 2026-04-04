@@ -1,10 +1,12 @@
 package com.hmall.cart.controller;
 
 
+import com.hmall.api.dto.CartDTO;
 import com.hmall.cart.domain.dto.CartFormDTO;
 import com.hmall.cart.domain.po.Cart;
 import com.hmall.cart.domain.vo.CartVO;
 import com.hmall.cart.service.ICartService;
+import com.hmall.common.utils.BeanUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "购物车相关接口")
 @RestController
@@ -50,5 +53,11 @@ public class CartController {
     @DeleteMapping
     public void deleteCartItemByIds(@RequestParam List<Long> ids){
         cartService.removeByItemIds(ids);
+    }
+
+    @Operation(summary = "根据用户ID查询购物车")
+    @GetMapping("/user/{userId}")
+    public List<CartDTO> queryCartsByUserId(@PathVariable("userId") Long userId){
+        return BeanUtils.copyList(cartService.queryMyCarts(), CartDTO.class);
     }
 }

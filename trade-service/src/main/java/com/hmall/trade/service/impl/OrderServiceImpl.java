@@ -1,13 +1,16 @@
 package com.hmall.trade.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hmall.api.client.ItemClient;
 import com.hmall.api.dto.ItemDTO;
 import com.hmall.api.dto.OrderDetailDTO;
+import com.hmall.api.dto.PurchaseHistoryDTO;
 import com.hmall.common.exception.BadRequestException;
+import com.hmall.common.utils.BeanUtils;
 import com.hmall.common.utils.UserContext;
 import com.hmall.trade.constants.CartClearMqConstants;
 import com.hmall.trade.constants.MQConstants;
@@ -182,5 +185,57 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             details.add(detail);
         }
         return details;
+    }
+
+    @Override
+    public List<PurchaseHistoryDTO> queryPurchaseHistoryByUserId(Long userId) {
+        // 1.根据用户ID查询所有订单
+        LambdaQueryWrapper<Order> orderWrapper = new LambdaQueryWrapper<>();
+        orderWrapper.eq(Order::getUserId, userId);
+        List<Order> orders = list(orderWrapper);
+        
+        if (orders.isEmpty()) {
+            return List.of();
+        }
+        
+        // 2.提取订单ID列表
+        List<Long> orderIds = orders.stream().map(Order::getId).collect(Collectors.toList());
+        
+        // 3.根据订单ID查询订单详情
+        LambdaQueryWrapper<OrderDetail> detailWrapper = new LambdaQueryWrapper<>();
+        detailWrapper.in(OrderDetail::getOrderId, orderIds);
+        List<OrderDetail> orderDetails = detailService.list(detailWrapper);
+        
+        if (orderDetails.isEmpty()) {
+            return List.of();
+        }
+        
+        // 4.转换为PurchaseHistoryDTO
+        List<PurchaseHistoryDTO> purchaseHistoryList = BeanUtils.copyList(orderDetails, PurchaseHistoryDTO.class);
+        
+        // 5.补充category和brand信息
+        // 提取所有itemId
+        Set<Long> itemIds = orderDetails.stream()
+                .map(OrderDetail::getItemId)
+                .collect(Collectors.toSet());
+        
+        // 从商品服务获取商品信息
+        List<ItemDTO> items = itemClient.queryItemByIds(itemIds);
+        if (items != null && !items.isEmpty()) {
+            // 构建itemId到ItemDTO的映射
+            Map<Long, ItemDTO> itemMap = items.stream()
+                    .collect(Collectors.toMap(ItemDTO::getId, item -> item));
+            
+            // 填充category和brand
+            for (PurchaseHistoryDTO history : purchaseHistoryList) {
+                ItemDTO item = itemMap.get(history.getItemId());
+                if (item != null) {
+                    history.setCategory(item.getCategory());
+                    history.setBrand(item.getBrand());
+                }
+            }
+        }
+        
+        return purchaseHistoryList;
     }
 }

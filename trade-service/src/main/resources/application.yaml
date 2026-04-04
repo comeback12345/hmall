@@ -1,3 +1,13 @@
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  cloud:
+    openfeign:
+      lazy-attributes-resolution: true
+
 server:
   port: 8085
 

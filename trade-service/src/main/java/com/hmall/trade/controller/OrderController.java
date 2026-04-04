@@ -1,7 +1,9 @@
 package com.hmall.trade.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hmall.api.dto.PurchaseHistoryDTO;
 import com.hmall.common.utils.BeanUtils;
+import com.hmall.common.utils.UserContext;
 import com.hmall.trade.domain.dto.OrderFormDTO;
 import com.hmall.trade.domain.vo.OrderVO;
 import com.hmall.trade.service.IOrderService;
@@ -11,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "订单管理接口")
 @RestController
@@ -36,5 +40,13 @@ public class OrderController {
     @PutMapping("/{orderId}")
     public void markOrderPaySuccess(@PathVariable Long orderId) {
         orderService.markOrderPaySuccess(orderId);
+    }
+
+    @Operation(summary = "查询当前用户的购买历史")
+    @GetMapping("/history")
+    public List<PurchaseHistoryDTO> queryPurchaseHistory() {
+        // 从token中获取当前登录用户ID
+        Long userId = UserContext.getUser();
+        return orderService.queryPurchaseHistoryByUserId(userId);
     }
 }

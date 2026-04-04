@@ -6,6 +6,9 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.3.106:8848
+      discovery:
+        enabled: true # 启用服务发现
+        register-enabled: true # 注册到Nacos，可能被其他服务调用
       config:
         file-extension: yaml # 文件后缀名
         shared-configs: # 共享配置

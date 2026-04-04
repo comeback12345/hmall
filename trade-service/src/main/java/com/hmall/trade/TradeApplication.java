@@ -11,7 +11,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.hmall.api.client", defaultConfiguration = DefaultFeignConfig.class)
 public class TradeApplication {
     public static void main(String[] args) {
+        // 设置 Feign 客户端懒加载，避免启动时立即创建
+        System.setProperty("feign.client.config.default.connectTimeout", "5000");
+        System.setProperty("feign.client.config.default.readTimeout", "5000");
         SpringApplication.run(TradeApplication.class, args);
     }
-
 }

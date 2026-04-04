@@ -12,10 +12,12 @@ hm:
   auth:
     excludePaths:
       - /search/**
+      - /api/search/**
       - /users/login
       - /items/**
       - /hi
       - /users
+      - /orders/history
 spring:
   main:
     web-application-type: reactive
