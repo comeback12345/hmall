@@ -19,8 +19,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,18 +51,26 @@ public class RecommendServiceImpl implements IRecommendService {
                 return getHotProducts(pageNo, pageSize);
             }
 
-            String searchKeywords = generateSearchKeywords(itemNames);
-
-            ItemPageQuery query = new ItemPageQuery();
-            query.setKey(searchKeywords);
-            query.setPageNo(pageNo != null ? pageNo : 1);
-            query.setPageSize(pageSize != null ? pageSize : 10);
-
-            PageDTO<ItemDoc> result = searchService.EsSearch(query);
+            // 获取AI生成的多个关键词列表
+            List<String> keywordList = generateKeywordList(itemNames);
             
-            if (result == null || CollUtils.isEmpty(result.getList())) {
+            if (CollUtils.isEmpty(keywordList)) {
                 return getHotProducts(pageNo, pageSize);
             }
+
+            // 对每个关键词搜索，取每个搜索结果的第一条
+            List<ItemDoc> recommendedItems = searchByMultipleKeywords(keywordList, pageSize);
+            
+            if (CollUtils.isEmpty(recommendedItems)) {
+                return getHotProducts(pageNo, pageSize);
+            }
+            
+            // 构建分页结果
+            PageDTO<ItemDoc> result = new PageDTO<>(
+                (long) recommendedItems.size(), 
+                1L, 
+                recommendedItems
+            );
             
             return result;
         } catch (Exception e) {
@@ -87,35 +94,90 @@ public class RecommendServiceImpl implements IRecommendService {
         }
     }
 
-    private String generateSearchKeywords(List<String> itemNames) {
+    /**
+     * 根据多个关键词搜索，每个关键词取第一条结果
+     */
+    private List<ItemDoc> searchByMultipleKeywords(List<String> keywordList, Integer pageSize) {
+        List<ItemDoc> allResults = new ArrayList<>();
+        Set<String> seenItemIds = new HashSet<>(); // 用于去重，ItemDoc的id是String类型
+        
+        int targetSize = pageSize != null ? pageSize : 10;
+        
+        for (String keyword : keywordList) {
+            if (allResults.size() >= targetSize) {
+                break; // 已经收集足够的商品
+            }
+            
+            try {
+                ItemPageQuery query = new ItemPageQuery();
+                query.setKey(keyword.trim());
+                query.setPageNo(1);
+                query.setPageSize(1); // 每个关键词只取第一条
+                
+                PageDTO<ItemDoc> result = searchService.EsSearch(query);
+                
+                if (result != null && CollUtils.isNotEmpty(result.getList())) {
+                    ItemDoc item = result.getList().get(0);
+                    // 去重：如果这个商品已经添加过了，就跳过
+                    if (!seenItemIds.contains(item.getId())) {
+                        allResults.add(item);
+                        seenItemIds.add(item.getId());
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("关键词 '{}' 搜索失败: {}", keyword, e.getMessage());
+            }
+        }
+        
+        return allResults;
+    }
+
+    /**
+     * 生成多个独立的搜索关键词列表
+     */
+    private List<String> generateKeywordList(List<String> itemNames) {
         try {
-            String promptContent = buildPrompt(itemNames);
+            String promptContent = buildPromptForMultipleKeywords(itemNames);
             SystemMessage systemMessage = new SystemMessage(
-                    "你是一个电商商品推荐助手。根据用户的购物车和购买历史，生成一个综合的搜索查询字符串，" +
-                    "这个查询应该能找到多种相关但不同类型的商品，而不是只匹配一种。" +
-                    "只返回查询字符串，不要其他内容。"
+                    "你是一个电商商品推荐助手。根据用户的购物车和购买历史，生成12个不同的商品类别或关键词。" +
+                    "每个关键词应该是独立的商品类型，用逗号分隔。" +
+                    "例如：红蜻蜓女鞋,诺基亚手机,婴儿纸尿裤,运动鞋,蓝牙耳机,休闲裤,智能手表,双肩包,防晒霜,保温杯,笔记本电脑,墨镜" +
+                    "只返回关键词列表，用逗号分隔，不要其他内容。"
             );
             UserMessage userMessage = new UserMessage(promptContent);
             Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
 
             ChatResponse response = chatModel.call(prompt);
-            String keywords = response.getResult().getOutput().getContent();
+            String keywordsStr = response.getResult().getOutput().getContent();
 
-            log.info("AI生成的搜索关键词: {}", keywords);
-            return keywords != null ? keywords.trim() : "";
+            log.info("AI生成的关键词列表: {}", keywordsStr);
+            
+            // 将逗号分隔的字符串转换为列表
+            if (keywordsStr != null && !keywordsStr.trim().isEmpty()) {
+                return Arrays.stream(keywordsStr.split("[,，]"))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .limit(12) // 最多12个关键词
+                        .collect(Collectors.toList());
+            }
+            return Collections.emptyList();
         } catch (Exception e) {
-            log.error("AI生成关键词失败", e);
-            return String.join(" ", itemNames.subList(0, Math.min(3, itemNames.size())));
+            log.error("AI生成关键词列表失败", e);
+            // 降级：直接返回原始商品名称的前12个
+            return itemNames.stream()
+                    .limit(12)
+                    .collect(Collectors.toList());
         }
     }
 
-    private String buildPrompt(List<String> itemNames) {
+    private String buildPromptForMultipleKeywords(List<String> itemNames) {
         StringBuilder sb = new StringBuilder();
         sb.append("用户的购物车和购买历史中的商品：\n");
         for (String name : itemNames) {
             sb.append("- ").append(name).append("\n");
         }
-        sb.append("\n请根据这些商品，生成一个搜索查询字符串，用于推荐多样化的相关商品。");
+        sb.append("\n请根据这些商品，生成12个不同的商品类别关键词，用于推荐多样化的商品。");
+        sb.append("\n每个关键词应该是独立的商品类型，用逗号分隔。");
         return sb.toString();
     }
 }
