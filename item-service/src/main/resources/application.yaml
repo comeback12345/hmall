@@ -1,6 +1,11 @@
 spring:
   lifecycle:
     timeout-per-shutdown-phase: 20s
+  main:
+    allow-bean-definition-overriding: true # 允许 Bean 覆盖，解决 Seata 冲突
+    lazy-initialization: false # 不启用懒加载，避免 Seata 代理问题
+  seata:
+    enabled: true # 启用 Seata，参与分布式事务
 
 server:
   port: 8081

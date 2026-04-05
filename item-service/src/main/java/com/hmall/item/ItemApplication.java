@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 })
 public class ItemApplication {
     public static void main(String[] args) {
+        // 启用 Bean 覆盖和延迟初始化，避免 Seata 启动问题
+        System.setProperty("spring.main.allow-bean-definition-overriding", "true");
         SpringApplication.run(ItemApplication.class, args);
     }
 }
